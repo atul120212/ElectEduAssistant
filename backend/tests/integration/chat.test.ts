@@ -29,13 +29,15 @@ describe('Chat API Integration Tests', () => {
     // Basic cleanup - in real world use a separate test DB
     await prisma.message.deleteMany();
     await prisma.conversation.deleteMany();
-    await prisma.user.create({
-        data: {
+    await prisma.user.upsert({
+        where: { id: 'test-user-id' },
+        update: {},
+        create: {
             id: 'test-user-id',
             sessionId: 'test-session-id',
             email: 'test@example.com'
         }
-    }).catch(() => {}); // Ignore if already exists
+    });
   });
 
   afterAll(async () => {

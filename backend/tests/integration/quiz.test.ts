@@ -23,8 +23,10 @@ describe('Quiz API Integration Tests', () => {
     await prisma.quiz.deleteMany();
     await prisma.user.deleteMany();
     
-    await prisma.user.create({
-        data: {
+    await prisma.user.upsert({
+        where: { id: 'test-user-id' },
+        update: {},
+        create: {
             id: 'test-user-id',
             sessionId: 'test-session-id',
             email: 'quiz-test@example.com'

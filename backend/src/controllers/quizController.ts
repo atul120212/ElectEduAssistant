@@ -75,13 +75,13 @@ export const submitQuiz = async (req: Request, res: Response, next: NextFunction
     const feedback: any[] = [];
 
     answers.forEach((ans: any, index: number) => {
-      const isCorrect = ans.selectedOption === questions[index].correctAnswer;
+      const isCorrect = ans.selectedOption === questions[index].answer;
       if (isCorrect) correctAnswers++;
 
       feedback.push({
         questionId: index,
         isCorrect,
-        correctOption: questions[index].correctAnswer,
+        correctOption: questions[index].answer,
         explanation: questions[index].explanation
       });
     });
