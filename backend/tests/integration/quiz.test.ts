@@ -1,13 +1,15 @@
 import request from 'supertest';
 import { prisma } from '../../src/config/database';
+import { verifyAccessToken } from '../../src/utils/auth';
 import express, { Express } from 'express';
 import quizRoutes from '../../src/routes/quiz.routes';
 import { errorHandler } from '../../src/middleware/errorHandler';
 
 const app: Express = express();
 app.use(express.json());
+jest.mock('../../src/utils/auth');
 app.use((req: any, res, next) => {
-  req.user = { userId: 'test-user-id' };
+  (verifyAccessToken as jest.Mock).mockReturnValue({ userId: 'test-user-id' });
   next();
 });
 app.use('/api/v1/quiz', quizRoutes);
@@ -39,7 +41,9 @@ describe('Quiz API Integration Tests', () => {
   });
 
   it('should retrieve a quiz', async () => {
-    const res = await request(app).get('/api/v1/quiz/test-quiz-id');
+    const res = await request(app)
+      .get('/api/v1/quiz/test-quiz-id')
+      .set('Authorization', 'Bearer mock-token');
     expect(res.status).toBe(200);
     expect(res.body.data.quiz.topic).toBe('Voting');
   });
@@ -47,6 +51,7 @@ describe('Quiz API Integration Tests', () => {
   it('should submit quiz results', async () => {
     const res = await request(app)
       .post('/api/v1/quiz/submit')
+      .set('Authorization', 'Bearer mock-token')
       .send({
         quizId: 'test-quiz-id',
         answers: ['18'],

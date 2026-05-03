@@ -9,6 +9,7 @@ const router = Router();
 router.post('/generate', requireAuth, validateRequest(quizGenerateSchema), generateQuiz);
 router.post('/submit', requireAuth, validateRequest(quizSubmitSchema), submitQuiz);
 router.get('/history/:userId', requireAuth, getQuizHistory);
+router.get('/:quizId', requireAuth, getQuizResults); // Fixed route for fetching quiz/results
 router.get('/:quizId/results', requireAuth, getQuizResults);
 
 export default router;

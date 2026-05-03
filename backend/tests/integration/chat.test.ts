@@ -1,19 +1,21 @@
 import request from 'supertest';
 import { prisma } from '../../src/config/database';
 import { generateChatResponse } from '../../src/services/geminiService';
+import { verifyAccessToken } from '../../src/utils/auth';
 import express, { Express } from 'express';
 import chatRoutes from '../../src/routes/chat.routes';
 import { errorHandler } from '../../src/middleware/errorHandler';
 
-// Mock the AI service
+// Mock the AI service and Auth
 jest.mock('../../src/services/geminiService');
+jest.mock('../../src/utils/auth');
 
 const app: Express = express();
 app.use(express.json());
 
 // Mock auth middleware for testing
 app.use((req: any, res, next) => {
-  req.user = { userId: 'test-user-id', sessionId: 'test-session-id' };
+  (verifyAccessToken as jest.Mock).mockReturnValue({ userId: 'test-user-id', sessionId: 'test-session-id' });
   next();
 });
 
@@ -45,6 +47,7 @@ describe('Chat API Integration Tests', () => {
 
     const res = await request(app)
       .post('/api/v1/chat/message')
+      .set('Authorization', 'Bearer mock-token')
       .send({
         message: 'How do I register to vote?',
         country: 'US'
@@ -60,7 +63,8 @@ describe('Chat API Integration Tests', () => {
 
   it('should retrieve conversation history', async () => {
     const res = await request(app)
-      .get(`/api/v1/chat/conversation/${conversationId}`);
+      .get(`/api/v1/chat/conversation/${conversationId}`)
+      .set('Authorization', 'Bearer mock-token');
 
     expect(res.status).toBe(200);
     expect(res.body.data.conversation.messages.length).toBe(2); // One user, one assistant
@@ -68,7 +72,8 @@ describe('Chat API Integration Tests', () => {
 
   it('should list user conversations', async () => {
     const res = await request(app)
-      .get('/api/v1/chat/conversations/test-user-id');
+      .get('/api/v1/chat/conversations/test-user-id')
+      .set('Authorization', 'Bearer mock-token');
 
     expect(res.status).toBe(200);
     expect(res.body.data.conversations.length).toBeGreaterThan(0);
