@@ -121,6 +121,7 @@ jobs:
             --platform managed \
             --region $REGION \
             --allow-unauthenticated \
+            --clear-secrets \
             --memory 1Gi \
             --cpu 1 \
             --max-instances 10 \
