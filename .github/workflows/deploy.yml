@@ -38,7 +38,7 @@ jobs:
         run: npm test
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
-          ANTHROPIC_API_KEY: dummy_key_for_testing
+          GEMINI_API_KEY: dummy_key_for_testing
           JWT_SECRET: dummy_secret_for_testing
           JWT_REFRESH_SECRET: dummy_refresh_secret_for_testing
           NODE_ENV: test
