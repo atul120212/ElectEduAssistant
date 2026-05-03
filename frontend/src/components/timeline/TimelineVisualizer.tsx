@@ -12,8 +12,9 @@ export const TimelineVisualizer: React.FC<{ country: string }> = ({ country }) =
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="flex justify-center items-center h-64" role="status" aria-live="polite">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" aria-hidden="true" />
+        <span className="sr-only">Loading timeline...</span>
       </div>
     );
   }
