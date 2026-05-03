@@ -114,15 +114,6 @@ jobs:
             echo -n "${{ secrets.JWT_SECRET }}" | gcloud secrets versions add jwt-secret --data-file=- || true
           fi
 
-      - name: Grant Granular Secret Access
-        run: |
-          PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
-          SA_EMAIL="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
-          
-          gcloud secrets add-iam-policy-binding gemini-api-key --member="serviceAccount:$SA_EMAIL" --role="roles/secretmanager.secretAccessor" || true
-          gcloud secrets add-iam-policy-binding database-url --member="serviceAccount:$SA_EMAIL" --role="roles/secretmanager.secretAccessor" || true
-          gcloud secrets add-iam-policy-binding jwt-secret --member="serviceAccount:$SA_EMAIL" --role="roles/secretmanager.secretAccessor" || true
-      
       - name: Deploy backend to Cloud Run
         run: |
           gcloud run deploy $BACKEND_SERVICE \
@@ -135,8 +126,7 @@ jobs:
             --max-instances 10 \
             --min-instances 1 \
             --timeout 300 \
-            --set-env-vars NODE_ENV=production,API_VERSION=v1 \
-            --set-secrets GEMINI_API_KEY=gemini-api-key:latest,DATABASE_URL=database-url:latest,JWT_SECRET=jwt-secret:latest \
+            --set-env-vars "NODE_ENV=production,API_VERSION=v1,GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }},DATABASE_URL=${{ secrets.DATABASE_URL }},JWT_SECRET=${{ secrets.JWT_SECRET || 'fallback-random-secret-123' }},CORS_ORIGIN=*" \
             ${{ secrets.CLOUD_SQL_CONNECTION && format('--add-cloudsql-instances {0}', secrets.CLOUD_SQL_CONNECTION) || '' }}
 
   deploy-frontend:
