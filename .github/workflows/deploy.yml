@@ -112,6 +112,13 @@ jobs:
           if [ ! -z "${{ secrets.JWT_SECRET }}" ]; then
             echo -n "${{ secrets.JWT_SECRET }}" | gcloud secrets versions add jwt-secret --data-file=- || true
           fi
+
+      - name: Grant Secret Access Permissions
+        run: |
+          PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
+          gcloud projects add-iam-policy-binding $PROJECT_ID \
+            --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+            --role="roles/secretmanager.secretAccessor"
       
       - name: Deploy backend to Cloud Run
         run: |
