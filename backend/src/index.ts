@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import compression from 'compression';
+import hpp from 'hpp';
+const xss = require('xss-clean');
 import { env } from './config/environment';
 import { connectDB } from './config/database';
 import { logger } from './middleware/logger';
@@ -12,6 +15,9 @@ const app = express();
 
 // Middleware
 app.use(helmet());
+app.use(xss());
+app.use(hpp());
+app.use(compression());
 app.use(cors({ origin: env.CORS_ORIGIN }));
 app.use(express.json());
 app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) } }));

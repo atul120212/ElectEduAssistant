@@ -29,12 +29,17 @@ export const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-4xl mx-auto p-4">
+    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-4xl mx-auto p-4" role="main" aria-label="Election Assistant Chat">
       {/* Chat Messages Area */}
-      <div className="flex-1 overflow-y-auto space-y-6 mb-4 p-4 rounded-xl bg-card border shadow-sm">
+      <div 
+        className="flex-1 overflow-y-auto space-y-6 mb-4 p-4 rounded-xl bg-card border shadow-sm"
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions"
+      >
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center" aria-hidden="true">
               <span className="text-3xl">🏛️</span>
             </div>
             <h2 className="text-2xl font-bold">Election Process Education Assistant</h2>
@@ -109,20 +114,24 @@ export const ChatInterface: React.FC = () => {
 
       {/* Input Area */}
       <form onSubmit={handleSubmit} className="relative flex items-center">
+        <label htmlFor="chat-input" className="sr-only">Ask a question about elections</label>
         <input
+          id="chat-input"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask a question..."
           className="w-full px-4 py-4 rounded-xl border bg-card focus:outline-none focus:ring-2 focus:ring-primary shadow-sm pr-14"
           disabled={isLoading}
+          aria-disabled={isLoading}
         />
         <button
           type="submit"
           disabled={!input.trim() || isLoading}
           className="absolute right-2 p-2 bg-primary text-primary-foreground rounded-lg disabled:opacity-50 transition-opacity"
+          aria-label="Send message"
         >
-          {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+          {isLoading ? <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" /> : <Send className="w-5 h-5" aria-hidden="true" />}
         </button>
       </form>
     </div>
