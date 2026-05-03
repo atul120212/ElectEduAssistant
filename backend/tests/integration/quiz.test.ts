@@ -21,7 +21,16 @@ describe('Quiz API Integration Tests', () => {
   beforeAll(async () => {
     await prisma.quizResult.deleteMany();
     await prisma.quiz.deleteMany();
+    await prisma.user.deleteMany();
     
+    await prisma.user.create({
+        data: {
+            id: 'test-user-id',
+            sessionId: 'test-session-id',
+            email: 'quiz-test@example.com'
+        }
+    });
+
     await prisma.quiz.create({
       data: {
         id: VALID_QUIZ_ID,
