@@ -15,6 +15,8 @@ app.use((req: any, res, next) => {
 app.use('/api/v1/quiz', quizRoutes);
 app.use(errorHandler);
 
+const VALID_QUIZ_ID = '00000000-0000-0000-0000-000000000001';
+
 describe('Quiz API Integration Tests', () => {
   beforeAll(async () => {
     await prisma.quizResult.deleteMany();
@@ -22,14 +24,15 @@ describe('Quiz API Integration Tests', () => {
     
     await prisma.quiz.create({
       data: {
-        id: 'test-quiz-id',
+        id: VALID_QUIZ_ID,
         topic: 'Voting',
         difficulty: 'medium',
         questions: [
           {
             question: 'What is the voting age?',
             options: ['16', '18', '21'],
-            answer: '18'
+            answer: '18',
+            explanation: 'In the US, the voting age is 18.'
           }
         ]
       }
@@ -42,8 +45,9 @@ describe('Quiz API Integration Tests', () => {
 
   it('should retrieve a quiz', async () => {
     const res = await request(app)
-      .get('/api/v1/quiz/test-quiz-id')
+      .get(`/api/v1/quiz/${VALID_QUIZ_ID}`)
       .set('Authorization', 'Bearer mock-token');
+    
     expect(res.status).toBe(200);
     expect(res.body.data.quiz.topic).toBe('Voting');
   });
@@ -53,13 +57,12 @@ describe('Quiz API Integration Tests', () => {
       .post('/api/v1/quiz/submit')
       .set('Authorization', 'Bearer mock-token')
       .send({
-        quizId: 'test-quiz-id',
-        answers: ['18'],
-        score: 100,
-        totalQuestions: 1
+        quizId: VALID_QUIZ_ID,
+        answers: [{ selectedOption: '18' }],
+        timeSpent: 30
       });
 
-    expect(res.status).toBe(201);
-    expect(res.body.data.result.score).toBe(100);
+    expect(res.status).toBe(200);
+    expect(res.body.data.score).toBe(100);
   });
 });

@@ -3,6 +3,26 @@ import { prisma } from '../config/database';
 import { generateQuizQuestions } from '../services/geminiService';
 import { AppError } from '../middleware/errorHandler';
 
+export const getQuiz = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { quizId } = req.params;
+    const quiz = await prisma.quiz.findUnique({
+      where: { id: quizId }
+    });
+
+    if (!quiz) {
+      throw new AppError('Quiz not found', 404);
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: { quiz }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const generateQuiz = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { topic, difficulty, count } = req.body;
