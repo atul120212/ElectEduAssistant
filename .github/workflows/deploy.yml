@@ -29,7 +29,9 @@ jobs:
       
       - name: Install backend dependencies
         working-directory: ./backend
-        run: npm ci
+        run: |
+          npm ci
+          npx prisma generate
       
       - name: Run backend tests
         working-directory: ./backend
