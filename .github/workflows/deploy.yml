@@ -114,6 +114,14 @@ jobs:
             echo -n "${{ secrets.JWT_SECRET }}" | gcloud secrets versions add jwt-secret --data-file=- || true
           fi
 
+      - name: Reset Service Configuration
+        run: |
+          gcloud run services update $BACKEND_SERVICE \
+            --platform managed \
+            --region $REGION \
+            --clear-env-vars \
+            --clear-secrets || true
+
       - name: Deploy backend to Cloud Run
         run: |
           gcloud run deploy $BACKEND_SERVICE \
@@ -121,7 +129,6 @@ jobs:
             --platform managed \
             --region $REGION \
             --allow-unauthenticated \
-            --clear-secrets \
             --memory 1Gi \
             --cpu 1 \
             --max-instances 10 \
