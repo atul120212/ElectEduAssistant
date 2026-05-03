@@ -3,6 +3,14 @@ import { prisma } from '../config/database';
 import { AppError } from '../middleware/errorHandler';
 import { getCache, setCache } from '../utils/cache';
 
+/**
+ * Retrieves a list of educational topics with optional filtering by category and search term.
+ * Implements memory caching for high performance.
+ * 
+ * @param req - Express request object with query params: category, difficulty, search
+ * @param res - Express response object
+ * @param next - Express next function
+ */
 export const getTopics = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const cacheKey = `topics_${JSON.stringify(req.query)}`;
@@ -49,6 +57,13 @@ export const getTopics = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
+/**
+ * Retrieves detailed information about a specific educational topic by ID.
+ * 
+ * @param req - Express request object with topicId param
+ * @param res - Express response object
+ * @param next - Express next function
+ */
 export const getTopicDetails = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { topicId } = req.params;

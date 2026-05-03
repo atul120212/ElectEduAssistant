@@ -4,6 +4,13 @@ import { generateChatResponse } from '../services/geminiService';
 import { AppError } from '../middleware/errorHandler';
 import { Prisma } from '@prisma/client';
 
+/**
+ * Handles incoming chat messages, manages conversation history, and generates AI responses.
+ * 
+ * @param req - Express request object containing message and optional conversationId
+ * @param res - Express response object
+ * @param next - Express next function
+ */
 export const handleMessage = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { message, conversationId, country } = req.body;
@@ -86,6 +93,13 @@ export const handleMessage = async (req: Request, res: Response, next: NextFunct
   }
 };
 
+/**
+ * Retrieves a list of chat conversations for the authenticated user.
+ * 
+ * @param req - Express request object
+ * @param res - Express response object
+ * @param next - Express next function
+ */
 export const getConversations = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.userId;

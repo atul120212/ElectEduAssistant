@@ -20,10 +20,10 @@ export const QuizInterface: React.FC = () => {
 
   if (isGenerating) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 space-y-4">
-        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      <div className="flex flex-col items-center justify-center h-64 space-y-4" role="status" aria-live="polite">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" aria-hidden="true" />
         <h2 className="text-xl font-medium">Generating your customized quiz...</h2>
-        <p className="text-muted-foreground">Claude is crafting questions on {topic}</p>
+        <p className="text-muted-foreground">Gemini is crafting questions on {topic}</p>
       </div>
     );
   }
@@ -95,12 +95,14 @@ export const QuizInterface: React.FC = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Difficulty</label>
-            <div className="grid grid-cols-3 gap-2">
+            <label id="difficulty-label" className="block text-sm font-medium mb-1">Difficulty</label>
+            <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="difficulty-label">
               {['easy', 'medium', 'hard'].map((level) => (
                 <button
                   key={level}
                   type="button"
+                  role="radio"
+                  aria-checked={difficulty === level}
                   onClick={() => setDifficulty(level)}
                   className={cn(
                     "py-2 rounded-md border text-sm font-medium capitalize transition-colors",

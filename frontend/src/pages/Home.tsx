@@ -147,6 +147,52 @@ export const Home: React.FC = () => {
           </div>
         </div>
       </section>
+      
+      {/* Official Resources Section */}
+      <section className="w-full py-12 md:py-24 lg:py-32 flex justify-center bg-muted/30" aria-labelledby="resources-title">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <h2 id="resources-title" className="text-3xl font-bold tracking-tighter md:text-4xl">Official Voting Resources</h2>
+              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
+                Direct access to official government portals for registration and information.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl pt-8">
+              <a 
+                href="https://vote.gov" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-start p-6 bg-card border rounded-xl hover:shadow-md transition-shadow group"
+                aria-label="Visit Vote.gov (opens in new tab)"
+              >
+                <h4 className="font-bold text-lg group-hover:text-primary transition-colors">Vote.gov</h4>
+                <p className="text-sm text-muted-foreground mt-2">Official guide to registration in all 50 states and territories.</p>
+              </a>
+              <a 
+                href="https://www.usa.gov/voter-registration" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-start p-6 bg-card border rounded-xl hover:shadow-md transition-shadow group"
+                aria-label="Visit USA.gov Voter Registration (opens in new tab)"
+              >
+                <h4 className="font-bold text-lg group-hover:text-primary transition-colors">USA.gov</h4>
+                <p className="text-sm text-muted-foreground mt-2">Learn about voting rules, election day, and residency requirements.</p>
+              </a>
+              <a 
+                href="https://www.fvap.gov" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-start p-6 bg-card border rounded-xl hover:shadow-md transition-shadow group"
+                aria-label="Visit FVAP.gov for military and overseas voters (opens in new tab)"
+              >
+                <h4 className="font-bold text-lg group-hover:text-primary transition-colors">FVAP.gov</h4>
+                <p className="text-sm text-muted-foreground mt-2">Special assistance for military members and overseas citizens.</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
