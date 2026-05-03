@@ -43,10 +43,10 @@ export const generateChatResponse = async (
   }
 };
 
-export const generateQuizQuestions = async (topic: string, difficulty: string): Promise<any[]> => {
+export const generateQuizQuestions = async (topic: string, difficulty: string, count: number = 5): Promise<any[]> => {
   try {
     const model = genAI.getGenerativeModel({ model: env.GEMINI_MODEL });
-    const prompt = `Generate a 5-question multiple choice quiz about "${topic}" for a "${difficulty}" level.
+    const prompt = `Generate a ${count}-question multiple choice quiz about "${topic}" for a "${difficulty}" level.
     Return the response as a valid JSON array of objects.
     Each object must have:
     - question: string
