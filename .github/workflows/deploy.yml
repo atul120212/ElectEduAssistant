@@ -86,7 +86,8 @@ jobs:
           gcloud services enable secretmanager.googleapis.com \
                                  run.googleapis.com \
                                  sqladmin.googleapis.com \
-                                 compute.googleapis.com
+                                 compute.googleapis.com \
+                                 cloudresourcemanager.googleapis.com
       
       - name: Configure Docker for GCR
         run: gcloud auth configure-docker
