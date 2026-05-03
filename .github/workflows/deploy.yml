@@ -95,6 +95,17 @@ jobs:
           docker push gcr.io/$PROJECT_ID/$BACKEND_SERVICE:$GITHUB_SHA
           docker push gcr.io/$PROJECT_ID/$BACKEND_SERVICE:latest
       
+      - name: Push Secrets to GCP Secret Manager
+        run: |
+          echo -n "${{ secrets.GEMINI_API_KEY }}" | gcloud secrets versions add gemini-api-key --data-file=- || \
+          (gcloud secrets create gemini-api-key --replication-policy="automatic" && \
+           echo -n "${{ secrets.GEMINI_API_KEY }}" | gcloud secrets versions add gemini-api-key --data-file=-)
+          
+          # Only sync JWT_SECRET if it exists in GitHub, otherwise generate a random one if GCP secret is missing
+          if [ ! -z "${{ secrets.JWT_SECRET }}" ]; then
+            echo -n "${{ secrets.JWT_SECRET }}" | gcloud secrets versions add jwt-secret --data-file=- || true
+          fi
+      
       - name: Deploy backend to Cloud Run
         run: |
           gcloud run deploy $BACKEND_SERVICE \
