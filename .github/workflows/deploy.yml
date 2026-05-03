@@ -81,6 +81,13 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       
+      - name: Enable Required GCP APIs
+        run: |
+          gcloud services enable secretmanager.googleapis.com \
+                                 run.googleapis.com \
+                                 sqladmin.googleapis.com \
+                                 compute.googleapis.com
+      
       - name: Configure Docker for GCR
         run: gcloud auth configure-docker
       
