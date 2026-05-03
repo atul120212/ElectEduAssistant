@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../config/database';
-import { generateQuizQuestions } from '../services/claudeService';
+import { generateQuizQuestions } from '../services/geminiService';
 import { AppError } from '../middleware/errorHandler';
 
 export const generateQuiz = async (req: Request, res: Response, next: NextFunction) => {

@@ -93,7 +93,7 @@ jobs:
             --min-instances 1 \
             --timeout 300 \
             --set-env-vars NODE_ENV=production,API_VERSION=v1 \
-            --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest,DATABASE_URL=database-url:latest,JWT_SECRET=jwt-secret:latest \
+            --set-secrets GEMINI_API_KEY=gemini-api-key:latest,DATABASE_URL=database-url:latest,JWT_SECRET=jwt-secret:latest \
             ${{ secrets.CLOUD_SQL_CONNECTION && format('--add-cloudsql-instances {0}', secrets.CLOUD_SQL_CONNECTION) || '' }}
 
   deploy-frontend:

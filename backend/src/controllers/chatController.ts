@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../config/database';
-import { generateChatResponse } from '../services/claudeService';
+import { generateChatResponse } from '../services/geminiService';
 import { AppError } from '../middleware/errorHandler';
 import { Prisma } from '@prisma/client';
 

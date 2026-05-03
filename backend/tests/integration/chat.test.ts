@@ -1,12 +1,12 @@
 import request from 'supertest';
 import { prisma } from '../../src/config/database';
-import { generateChatResponse } from '../../src/services/claudeService';
+import { generateChatResponse } from '../../src/services/geminiService';
 import express, { Express } from 'express';
 import chatRoutes from '../../src/routes/chat.routes';
 import { errorHandler } from '../../src/middleware/errorHandler';
 
 // Mock the AI service
-jest.mock('../../src/services/claudeService');
+jest.mock('../../src/services/geminiService');
 
 const app: Express = express();
 app.use(express.json());

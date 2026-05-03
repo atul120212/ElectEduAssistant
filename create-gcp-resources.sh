@@ -37,7 +37,7 @@ gcloud sql users create appuser \
   --password=$(openssl rand -base64 32)
 
 # Create secrets
-echo -n "YOUR_ANTHROPIC_API_KEY" | gcloud secrets create anthropic-api-key --data-file=-
+echo -n "YOUR_GEMINI_API_KEY" | gcloud secrets create gemini-api-key --data-file=-
 echo -n "postgresql://appuser:PASSWORD@/election_edu?host=/cloudsql/PROJECT:REGION:INSTANCE" | gcloud secrets create database-url --data-file=-
 echo -n $(openssl rand -base64 32) | gcloud secrets create jwt-secret --data-file=-
 
